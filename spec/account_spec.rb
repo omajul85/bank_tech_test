@@ -38,6 +38,23 @@ describe Account do
 		it "adds a transaction to the array" do
 			expect { account.deposit(100) }.to change { account.transactions.length }.by 1
 		end
+	end
+
+	describe "#withdrawal" do
+
+		before(:each) do
+			account.deposit(100)
+		end
+
+		it "decreases the balance by amount of money" do
+			account.withdrawal(10)
+			expect(account.balance).to eq 90.0
+		end
+
+		it "adds a transaction to the array" do
+			expect { account.withdrawal(10) }.to change { account.transactions.length }.by 1
+		end
+		
 	end 
 
 end
