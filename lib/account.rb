@@ -16,20 +16,19 @@ class Account
 	def deposit(amount, date = nil)
 		@balance += amount.to_f
 		date = get_date(date)
-		@transactions << @transaction.new(date: date, credit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
+		@transactions.unshift @transaction.new(date: date, credit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
 	end
 
 	def withdrawal(amount, date = nil)
 		raise OVERDRAFT_ERROR if amount.to_f > balance
 		@balance -= amount.to_f
 		date = get_date(date)
-		@transactions << @transaction.new(date: date, debit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
+		@transactions.unshift @transaction.new(date: date, debit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
 	end
 
-	def print_bank_statement(mode = "")
+	def print_bank_statement
 		p = printer.new(transactions)
-		return p.ascending if mode == "ASC"
-		p.descending
+		p.display
 	end
 
 	private
