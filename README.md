@@ -1,4 +1,6 @@
-# The Bank Tech Test  [![Build Status](https://travis-ci.org/omajul85/bank_tech_test.svg?branch=master)](https://travis-ci.org/omajul85/bank_tech_test)  
+# The Bank Tech Test
+
+[![Build Status](https://travis-ci.org/omajul85/bank_tech_test.svg?branch=master)](https://travis-ci.org/omajul85/bank_tech_test) 
 
 **Author:** Omar Alvarez
 
