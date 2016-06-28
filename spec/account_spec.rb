@@ -2,7 +2,8 @@ require 'account'
 
 describe Account do
 
-	subject(:account) { Account.new }
+	let(:printer) { double(:printer) }
+	subject(:account) { Account.new printer }
 
 	it { is_expected.to respond_to :deposit }
 	it { is_expected.to respond_to :withdrawal }
@@ -22,7 +23,7 @@ describe Account do
 
 		context "when created with some amount of money" do
 			it "has a balance of that amount of money" do
-				dummy_account = Account.new 10
+				dummy_account = Account.new(printer, 10)
 				expect(dummy_account.balance).to eq 10.0
 			end
 		end
@@ -54,7 +55,11 @@ describe Account do
 		it "adds a transaction to the array" do
 			expect { account.withdrawal(10) }.to change { account.transactions.length }.by 1
 		end
-		
+
+		it "raises error if withdrawal amount exceeds the current balance" do
+			expect{ account.withdrawal(200) }.to raise_error(RuntimeError, Account::OVERDRAFT_ERROR)
+		end
+
 	end 
 
 end
