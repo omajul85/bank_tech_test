@@ -29,4 +29,15 @@ describe Account do
 
 	end
 
+	describe "#deposit" do
+		it "increases the balance by amount of money" do
+			account.deposit(100)
+			expect(account.balance).to eq 100.0
+		end
+
+		it "adds a transaction to the array" do
+			expect { account.deposit(100) }.to change { account.transactions.length }.by 1
+		end
+	end 
+
 end
