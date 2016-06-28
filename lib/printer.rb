@@ -8,13 +8,7 @@ class Printer
 		@data = data
 	end
 
-	def ascending
-		@data = data.sort_by{ |h| h[:date] }
-		output
-	end
-
-	def descending
-		@data = data.sort_by{ |h| h[:date] }.reverse
+	def display
 		output
 	end
 
@@ -23,7 +17,7 @@ class Printer
 		def output
 			txt = HEADER
 			@data.each do |x|
-				txt += "#{x[:date]} || #{x[:credit]} || #{x[:debit]} || #{x[:balance]}\n"
+				txt += x.to_s
 			end
 			txt
 		end

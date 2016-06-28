@@ -1,4 +1,4 @@
-require 'time'
+require 'date'
 
 class Account
 
@@ -6,25 +6,24 @@ class Account
 
 	attr_reader :transactions, :balance, :printer
 
-	def initialize(printer = Printer, balance = 0)
-		@balance = balance.to_f
+	def initialize(transaction = Transaction, printer = Printer)
+		@balance = 0.0
 		@transactions = []
 		@printer = printer
+		@transaction = transaction
 	end
 
-	def deposit(amount, date = Time.now)
+	def deposit(amount, date = nil)
 		@balance += amount.to_f
-		date = Time.parse(date) if isString?(date)
-		@transactions << { date: date.strftime('%d/%m/%Y'), credit: sprintf('%.2f', amount),
-			debit: '', balance: sprintf('%.2f', balance) }
+		date = get_date(date)
+		@transactions << @transaction.new(date: date, credit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
 	end
 
-	def withdrawal(amount, date = Time.now)
+	def withdrawal(amount, date = nil)
 		raise OVERDRAFT_ERROR if amount.to_f > balance
 		@balance -= amount.to_f
-		date = Time.parse(date) if isString?(date)
-		@transactions << { date: date.strftime('%d/%m/%Y'), credit: '',
-			debit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance) }
+		date = get_date(date)
+		@transactions << @transaction.new(date: date, debit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
 	end
 
 	def print_bank_statement(mode = "")
@@ -35,8 +34,9 @@ class Account
 
 	private
 
-		def isString?(date)
-			date.is_a? String
+		def get_date(date)
+			res = date.nil? ? Date.today : Date.parse(date)
+			res.strftime('%d/%m/%Y')
 		end
 
 end

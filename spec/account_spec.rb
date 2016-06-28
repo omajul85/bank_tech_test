@@ -1,9 +1,10 @@
 require 'account'
+require 'transaction'
+require 'printer'
 
 describe Account do
 
-	let(:printer) { double(:printer) }
-	subject(:account) { Account.new printer }
+	subject(:account) { Account.new Transaction, Printer }
 
 	it { is_expected.to respond_to :deposit }
 	it { is_expected.to respond_to :withdrawal }
@@ -18,13 +19,6 @@ describe Account do
 		context "when created with no money" do
 			it "has a balance of 0.0" do
 				expect(account.balance).to eq 0.0
-			end
-		end
-
-		context "when created with some amount of money" do
-			it "has a balance of that amount of money" do
-				dummy_account = Account.new(printer, 10)
-				expect(dummy_account.balance).to eq 10.0
 			end
 		end
 
