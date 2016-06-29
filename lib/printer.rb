@@ -4,11 +4,11 @@ class Printer
 
 	attr_reader :data
 	
-	def initialize(data)
+	def set_data(data)
 		@data = data
 	end
 
-	def display
+	def to_s
 		output
 	end
 
@@ -16,10 +16,10 @@ class Printer
 
 		def output
 			txt = HEADER
-			@data.each do |x|
-				txt += x.to_s
+			data.each do |x|
+				txt += x.to_s + "\n"
 			end
-			txt
+			txt.chomp
 		end
 
 end

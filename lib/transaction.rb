@@ -1,8 +1,6 @@
 class Transaction
 
-	attr_reader :debit, :credit, :date, :balance
-
-	def initialize(date: Date.today.strftime('%d/%m/%Y'), credit: "", debit: "", balance:)
+	def initialize(date:, credit: nil, debit: nil, balance:)
 		@date    = date
 		@debit   = debit
 		@credit  = credit
@@ -10,7 +8,16 @@ class Transaction
 	end
 
 	def to_s
-		"#{@date} || #{@credit} || #{@debit} || #{@balance}\n"
+		"#{date} || #{format(credit)} || #{format(debit)} || #{format(balance)}"
 	end
+
+	private
+
+		attr_reader :debit, :credit, :date, :balance
+
+		def format(amount)
+			return "" if amount.nil?
+			sprintf('%.2f', amount)
+		end
 
 end

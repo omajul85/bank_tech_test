@@ -1,4 +1,6 @@
 require 'date'
+require "./lib/transactions"
+require "./lib/printer"
 
 class Account
 
@@ -6,29 +8,29 @@ class Account
 
 	attr_reader :transactions, :balance, :printer
 
-	def initialize(transaction = Transaction, printer = Printer)
+	def initialize(transaction: nil, printer: nil)
 		@balance = 0.0
-		@transactions = []
-		@printer = printer
-		@transaction = transaction
+		@transactions ||= Transactions.new
+		@printer ||= Printer.new
 	end
 
 	def deposit(amount, date = nil)
 		@balance += amount.to_f
 		date = get_date(date)
-		@transactions.unshift @transaction.new(date: date, credit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
+		transactions.deposit(date, amount, balance)
 	end
 
-	def withdrawal(amount, date = nil)
+	def withdraw(amount, date = nil)
 		raise OVERDRAFT_ERROR if amount.to_f > balance
 		@balance -= amount.to_f
 		date = get_date(date)
-		@transactions.unshift @transaction.new(date: date, debit: sprintf('%.2f', amount), balance: sprintf('%.2f', balance))
+		transactions.withdraw(date, amount, balance)
 	end
 
-	def print_bank_statement
-		p = printer.new(transactions)
-		p.display
+	def print_bank_statement(mode = "DESC", output = STDOUT)
+		data = mode == "ASC" ? transactions.all : transactions.reverse
+		printer.set_data(data)
+		output.puts(printer.to_s)
 	end
 
 	private

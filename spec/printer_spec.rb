@@ -8,19 +8,20 @@ describe Printer do
 		Transaction.new(date: "13/01/2012", credit: 2000, balance: 3000)]
 	end
 
-	subject(:printer) { Printer.new(transactions) }
+	subject(:printer) { Printer.new }
 
-	describe "#initialization" do
-		it "accepts the data that must be printed" do
+	before(:each) { printer.set_data transactions }
+
+	describe "#set_data" do
+		it "sets the data that must be printed" do
 			expect(printer.data).to eq transactions
 		end
 	end
 
-	describe "#display" do
-		it "displays the data" do
-			result = "date || credit || debit || balance\n10/01/2012 || 1000 ||  || 1000\n13/01/2012 || 2000 ||  || 3000\n"
-			txt = printer.display
-			expect(txt).to eq result
+	describe "#to_s" do
+		it "creates the string of data that needs to be printed" do
+			result = "date || credit || debit || balance\n10/01/2012 || 1000.00 ||  || 1000.00\n13/01/2012 || 2000.00 ||  || 3000.00"
+			expect(printer.to_s).to eq result
 		end
 	end
 
